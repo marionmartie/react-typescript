@@ -11,7 +11,7 @@ export default function App() {
     <NavBar />
     <Hero title="React Jobs" subtitle="Find React jobs here" />
     <HomeCard />
-    <JobList />
+    <JobList limit={3} />
     </>
   )
 }

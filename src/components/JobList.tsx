@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 type Job = {
     list: {
         id: string,
@@ -17,6 +19,12 @@ type Job = {
 
 
 const JobList = ({ list } : Job) => {
+    const [showFullDescription, setShowFullDescription] = useState(false)
+    let desc: string = list.description
+    if ( !showFullDescription ) {
+        desc = desc.substring(0, 90) + '...'
+    }
+
     return (
         <div className="bg-white rounded-xl shadow-md relative">
             <div className="p-4">
@@ -26,7 +34,10 @@ const JobList = ({ list } : Job) => {
                 </div>
 
                 <div className="mb-5">
-                    { list.description }
+                    { desc }
+                    <button onClick={ () => setShowFullDescription(prev => !prev)} className="text-blue-500 hover:text-blue-600 underline cursor-pointer">
+                        { showFullDescription ? 'See less' : 'See more' }
+                    </button>
                 </div>
 
                 <h3 className="text-indigo-500 mb-2">{ list.salary } / Year</h3>
