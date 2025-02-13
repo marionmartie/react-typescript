@@ -2,9 +2,10 @@ import { useState } from 'react'
 import jobItems from '../jobs.json'
 import JobList from './JobList'
 
-function JobMap({limit} : { limit: number }) {
+function JobMap({limit} : { limit?: number }) {
   const [jobs, setJobs] = useState(jobItems)
-  const recentJobs: typeof jobs = jobs.splice(0,limit || jobs.length)
+
+  const recentJobs: typeof jobs = jobs.splice(0, limit || jobs.length)
 
   return (
     recentJobs.map( el => {
@@ -13,7 +14,7 @@ function JobMap({limit} : { limit: number }) {
   )
 }
 
-const JobListing = ({limit} : { limit: number }) => {
+const JobListing = ({limit} : { limit?: number }) => {
   return (
     <>
     <section className="bg-blue-50 px-4 py-10">
