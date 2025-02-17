@@ -1,9 +1,7 @@
-import { useState } from 'react'
-import jobItems from '../jobs.json'
+import jobs from '../jobs.json'
 import JobList from './JobList'
 
 function JobMap({limit} : { limit?: number }) {
-  const [jobs, setJobs] = useState(jobItems)
 
   const recentJobs: typeof jobs = jobs.splice(0, limit || jobs.length)
 
@@ -24,7 +22,7 @@ const JobListing = ({limit} : { limit?: number }) => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {
-            JobMap({limit})
+            <JobMap limit={limit} />
           }
         </div>
       </div>
