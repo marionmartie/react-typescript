@@ -1,18 +1,58 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Job } from "../types"
 
-const AddJob = () => {
-    return (
-        <section className="bg-indigo-50">
+type AddJobProps = {
+  addJobSubmit: (newJob: Job) => void;
+}
+
+const AddJob: React.FC<AddJobProps> = ({ addJobSubmit }) => {
+  const [title, setTitle] = useState('')
+  const [type, setType] = useState('')
+  const [description, setDescription] = useState('')
+  const [salary, setSalary] = useState('')
+  const [location, setLocation] = useState('')
+  const [company, setCompany] = useState('')
+  const [companyDescription, setCompanyDescription] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [contactPhone, setContactPhone] = useState('')
+
+  const navigation = useNavigate()
+
+  const submitForm = (e: React.FormEvent) => {
+    e.preventDefault()
+    const newJob = {
+      title, //instead of title : title
+      type,
+      description,
+      location,
+      salary,
+      company: {
+        name: company,
+        description: companyDescription,
+        contactEmail,
+        contactPhone
+      }
+    }
+
+    addJobSubmit(newJob)
+    return navigation('/jobs')
+  }
+
+  return (
+    <section className="bg-indigo-50">
       <div className="container m-auto max-w-2xl py-24">
         <div
           className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
         >
-          <form>
+          <form onSubmit={submitForm}>
             <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
 
             <div className="mb-4">
               <label htmlFor="type" className="block text-gray-700 font-bold mb-2">Job Type</label>
               <select
+                value={type}
+                onChange={e => setType(e.target.value)}
                 id="type"
                 name="type"
                 className="border rounded w-full py-2 px-3"
@@ -27,6 +67,8 @@ const AddJob = () => {
             <div className="mb-4">
               <label className="block text-gray-700 font-bold mb-2">Job Listing Name</label>
               <input
+                value={title}
+                onChange={e => setTitle(e.target.value)}
                 type="text"
                 id="title"
                 name="title"
@@ -40,6 +82,8 @@ const AddJob = () => {
                 htmlFor="description"
                 className="block text-gray-700 font-bold mb-2">Description</label>
               <textarea
+                value={description}
+                onChange={e => setDescription(e.target.value)}
                 id="description"
                 name="description"
                 className="border rounded w-full py-2 px-3"
@@ -50,6 +94,8 @@ const AddJob = () => {
             <div className="mb-4">
               <label htmlFor="type" className="block text-gray-700 font-bold mb-2">Salary</label>
               <select
+                value={salary}
+                onChange={e => setSalary(e.target.value)}
                 id="salary"
                 name="salary"
                 className="border rounded w-full py-2 px-3"
@@ -73,12 +119,14 @@ const AddJob = () => {
                 Location
               </label>
               <input
+                value={location}
+                onChange={e => setLocation(e.target.value)}
                 type='text'
                 id='location'
                 name='location'
                 className='border rounded w-full py-2 px-3 mb-2'
                 placeholder='Company Location'
-                required           
+                required
               />
             </div>
 
@@ -87,6 +135,8 @@ const AddJob = () => {
             <div className="mb-4">
               <label htmlFor="company" className="block text-gray-700 font-bold mb-2">Company Name</label>
               <input
+                value={company}
+                onChange={e => setCompany(e.target.value)}
                 type="text"
                 id="company"
                 name="company"
@@ -100,6 +150,8 @@ const AddJob = () => {
                 htmlFor="company_description"
                 className="block text-gray-700 font-bold mb-2">Company Description</label>
               <textarea
+                value={companyDescription}
+                onChange={e => setCompanyDescription(e.target.value)}
                 id="company_description"
                 name="company_description"
                 className="border rounded w-full py-2 px-3"
@@ -112,6 +164,8 @@ const AddJob = () => {
                 htmlFor="contact_email"
                 className="block text-gray-700 font-bold mb-2">Contact Email</label>
               <input
+                value={contactEmail}
+                onChange={e => setContactEmail(e.target.value)}
                 type="email"
                 id="contact_email"
                 name="contact_email"
@@ -125,6 +179,8 @@ const AddJob = () => {
                 htmlFor="contact_phone"
                 className="block text-gray-700 font-bold mb-2">Contact Phone</label>
               <input
+                value={contactPhone}
+                onChange={e => setContactPhone(e.target.value)}
                 type="tel"
                 id="contact_phone"
                 name="contact_phone"
@@ -144,7 +200,7 @@ const AddJob = () => {
         </div>
       </div>
     </section>
-    )
+  )
 }
 
 export default AddJob

@@ -5,8 +5,22 @@ import JobsPage from './pages/JobsPage';
 import NotFound from './pages/NotFound';
 import JobPage, {jobLoader} from './pages/JobPage';
 import AddJob from './pages/AddJob';
+import { Job } from './types.ts'
+
 
 export default function App() {
+
+  const addJob = async (newJob: Job) => {
+    const res = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newJob)
+    })
+
+    return
+  }
   
   const router = createBrowserRouter(
     createRoutesFromElements( 
@@ -14,7 +28,7 @@ export default function App() {
           <Route index element={ <HomePage /> } />
           <Route path='/jobs' element={ <JobsPage /> } />
           <Route path='/jobs/:id' element={ <JobPage /> } loader={jobLoader} />
-          <Route path='/add-job' element={ <AddJob /> } />
+          <Route path='/add-job' element={ <AddJob addJobSubmit={addJob} /> } />
           <Route path='*' element={ <NotFound /> } />
       </Route>
     )
