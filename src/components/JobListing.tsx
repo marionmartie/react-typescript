@@ -1,9 +1,29 @@
-import jobs from '../jobs.json';
+// import jobs from '../jobs.json';
 import JobList from './JobList';
+import { useState, useEffect } from 'react';
 
 const Listing = ({limit} : {limit?: number}) => {
+    const [jobs, setJobs] = useState<{ id: string; title: string; type: string; description: string; location: string; salary: string; company: { name: string; description: string; contactEmail: string; contactPhone: string; }; }[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try{ 
+                const res = await fetch('http://localhost:5000/jobs');
+                const data = await res.json();
+                setJobs(data.slice(0, limit || data.length));
+            } catch(error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchJobs();
+    }, [])
     return (
-        jobs.slice(0, limit || jobs.length).map((job) => (
+        loading ? <p>Loading jobs...</p> :
+        jobs.map((job) => (
             <JobList list={job} key={job.id} />
         ))
     )
