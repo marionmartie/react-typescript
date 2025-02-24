@@ -1,9 +1,21 @@
 import { useLoaderData, LoaderFunction } from "react-router-dom";
 import { FaMapMarker, FaArrowLeft } from "react-icons/fa";
-import { Link, LoaderFunctionArgs } from "react-router-dom";
+import { Link, LoaderFunctionArgs, useNavigate } from "react-router-dom";
 
-const JobPage = () => {
+type ChildProps = {
+    deleteJobAction: (id: string) => void;
+}
+
+const JobPage: React.FC<ChildProps> = ({deleteJobAction}) => {
     const job = useLoaderData();
+    const navigate = useNavigate();
+    const deleteClick = (id: string) => {
+        const confirm = window.confirm('Delete this job?')
+        if (!confirm) return
+
+        deleteJobAction(id)
+        navigate('/jobs')
+    }
     return (
         <>
             <section>
@@ -83,6 +95,7 @@ const JobPage = () => {
                                     to={`/edit-job/${job.id}`}
                                     className="bg-indigo-500 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">Edit Job</Link>
                                 <button
+                                    onClick={() => deleteClick(job.id)}
                                     className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
                                     Delete Job
                                 </button>
@@ -97,7 +110,7 @@ const JobPage = () => {
 
 const jobLoader: LoaderFunction = async ({ params }: LoaderFunctionArgs) => {
     const { id } = params as { id: string };
-    const res = await fetch(`http://localhost:5000/jobs/${id}`);
+    const res = await fetch(`/api/jobs/${id}`);
     if (!res.ok) {
         return { status: res.status, statusText: res.statusText };
     }
